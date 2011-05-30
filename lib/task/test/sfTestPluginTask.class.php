@@ -23,6 +23,7 @@ class sfTestPluginTask extends sfTaskExtraTestBaseTask
 
     $this->addOptions(array(
       new sfCommandOption('only', null, sfCommandOption::PARAMETER_REQUIRED, 'Only run "unit" or "functional" tests'),
+      new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
     ));
 
     $this->namespace = 'test';
@@ -62,5 +63,10 @@ EOF;
     $h->register($finder->in($h->base_dir));
 
     $h->run();
+
+    if ($options['xml'])
+    {
+      file_put_contents($options['xml'], $h->to_xml());
+    }
   }
 }
